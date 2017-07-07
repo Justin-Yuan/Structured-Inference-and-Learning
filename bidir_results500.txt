@@ -1,0 +1,455 @@
+epoch 0, run 0, loss 0.0867208
+epoch 0, run 10, loss 0.0633045
+epoch 0, run 20, loss 0.0569024
+epoch 0, run 30, loss 0.0408388
+epoch 0, Validation acc: 44%
+epoch 1, run 0, loss 0.0852829
+epoch 1, run 10, loss 0.0724224
+epoch 1, run 20, loss 0.0404328
+epoch 1, run 30, loss 0.0406868
+epoch 2, run 0, loss 0.0390217
+epoch 2, run 10, loss 0.0684455
+epoch 2, run 20, loss 0.0220354
+epoch 2, run 30, loss 0.0576321
+epoch 2, Validation acc: 45.6%
+epoch 3, run 0, loss 0.033669
+epoch 3, run 10, loss 0.0588952
+epoch 3, run 20, loss 0.0159023
+epoch 3, run 30, loss 0.079529
+epoch 4, run 0, loss 0.0455556
+epoch 4, run 10, loss 0.127915
+epoch 4, run 20, loss 0.0306018
+epoch 4, run 30, loss 0.0457401
+epoch 4, Validation acc: 45.6%
+epoch 5, run 0, loss 0.0953092
+epoch 5, run 10, loss 0.101123
+epoch 5, run 20, loss 0.0378921
+epoch 5, run 30, loss 0.0756711
+epoch 6, run 0, loss 0.108178
+epoch 6, run 10, loss 0.0432385
+epoch 6, run 20, loss 0.025982
+epoch 6, run 30, loss 0.0758137
+epoch 6, Validation acc: 45.2%
+epoch 7, run 0, loss 0.0290747
+epoch 7, run 10, loss 0.0517068
+epoch 7, run 20, loss 0.010599
+epoch 7, run 30, loss 0.0371277
+epoch 8, run 0, loss 0.0530449
+epoch 8, run 10, loss 0.0894099
+epoch 8, run 20, loss 0.00999909
+epoch 8, run 30, loss 0.0438868
+epoch 8, Validation acc: 47.2%
+epoch 9, run 0, loss 0.0539479
+epoch 9, run 10, loss 0.152272
+epoch 9, run 20, loss 0.0259973
+epoch 9, run 30, loss 0.0814864
+epoch 10, run 0, loss 0.0436064
+epoch 10, run 10, loss 0.0887504
+epoch 10, run 20, loss 0.0364716
+epoch 10, run 30, loss 0.0527968
+epoch 10, Validation acc: 44.8%
+epoch 11, run 0, loss 0.0396391
+epoch 11, run 10, loss 0.107597
+epoch 11, run 20, loss 0.0443391
+epoch 11, run 30, loss 0.014223
+epoch 12, run 0, loss 0.0498135
+epoch 12, run 10, loss 0.091066
+epoch 12, run 20, loss 0.0219309
+epoch 12, run 30, loss 0.0206214
+epoch 12, Validation acc: 46%
+epoch 13, run 0, loss 0.012381
+epoch 13, run 10, loss 0.0641471
+epoch 13, run 20, loss 0.0753399
+epoch 13, run 30, loss 0.0259333
+epoch 14, run 0, loss 0.0163501
+epoch 14, run 10, loss 0.0471697
+epoch 14, run 20, loss 0.0828239
+epoch 14, run 30, loss 0.031113
+epoch 14, Validation acc: 46.8%
+epoch 15, run 0, loss 0.0211182
+epoch 15, run 10, loss 0.0210529
+epoch 15, run 20, loss 0.0292215
+epoch 15, run 30, loss 0.0247161
+epoch 16, run 0, loss 0.0236123
+epoch 16, run 10, loss 0.0562547
+epoch 16, run 20, loss 0.0337906
+epoch 16, run 30, loss 0.0242913
+epoch 16, Validation acc: 46.4%
+epoch 17, run 0, loss 0.0221382
+epoch 17, run 10, loss 0.0811789
+epoch 17, run 20, loss 0.102829
+epoch 17, run 30, loss 0.133641
+epoch 18, run 0, loss 0.0719572
+epoch 18, run 10, loss 0.0613718
+epoch 18, run 20, loss 0.0511698
+epoch 18, run 30, loss 0.0569595
+epoch 18, Validation acc: 46.4%
+epoch 19, run 0, loss 0.0427587
+epoch 19, run 10, loss 0.0469097
+epoch 19, run 20, loss 0.0391435
+epoch 19, run 30, loss 0.0141925
+epoch 20, run 0, loss 0.0448121
+epoch 20, run 10, loss 0.0229011
+epoch 20, run 20, loss 0.049627
+epoch 20, run 30, loss 0.0147991
+epoch 20, Validation acc: 45.6%
+epoch 21, run 0, loss 0.0379594
+epoch 21, run 10, loss 0.0320052
+epoch 21, run 20, loss 0.0994996
+epoch 21, run 30, loss 0.0103828
+epoch 22, run 0, loss 0.0215652
+epoch 22, run 10, loss 0.0734947
+epoch 22, run 20, loss 0.0753524
+epoch 22, run 30, loss 0.0296831
+epoch 22, Validation acc: 45.6%
+epoch 23, run 0, loss 0.0123321
+epoch 23, run 10, loss 0.0745923
+epoch 23, run 20, loss 0.0324624
+epoch 23, run 30, loss 0.0271373
+epoch 24, run 0, loss 0.015584
+epoch 24, run 10, loss 0.0367888
+epoch 24, run 20, loss 0.0399311
+epoch 24, run 30, loss 0.014395
+epoch 24, Validation acc: 45.6%
+epoch 25, run 0, loss 0.0319499
+epoch 25, run 10, loss 0.0436823
+epoch 25, run 20, loss 0.0574235
+epoch 25, run 30, loss 0.007223
+epoch 26, run 0, loss 0.0244291
+epoch 26, run 10, loss 0.0490239
+epoch 26, run 20, loss 0.0487379
+epoch 26, run 30, loss 0.0172836
+epoch 26, Validation acc: 44.8%
+epoch 27, run 0, loss 0.00690616
+epoch 27, run 10, loss 0.0288792
+epoch 27, run 20, loss 0.070139
+epoch 27, run 30, loss 0.0274648
+epoch 28, run 0, loss 0.00861974
+epoch 28, run 10, loss 0.0308196
+epoch 28, run 20, loss 0.0958189
+epoch 28, run 30, loss 0.0304586
+epoch 28, Validation acc: 46%
+epoch 29, run 0, loss 0.0177989
+epoch 29, run 10, loss 0.0407911
+epoch 29, run 20, loss 0.0655018
+epoch 29, run 30, loss 0.0236337
+epoch 30, run 0, loss 0.0250174
+epoch 30, run 10, loss 0.0307343
+epoch 30, run 20, loss 0.0463608
+epoch 30, run 30, loss 0.0284914
+epoch 30, Validation acc: 45.6%
+epoch 31, run 0, loss 0.0302464
+epoch 31, run 10, loss 0.0151675
+epoch 31, run 20, loss 0.0405573
+epoch 31, run 30, loss 0.0607503
+epoch 32, run 0, loss 0.0154394
+epoch 32, run 10, loss 0.0115911
+epoch 32, run 20, loss 0.0147176
+epoch 32, run 30, loss 0.0254792
+epoch 32, Validation acc: 45.6%
+epoch 33, run 0, loss 0.0577478
+epoch 33, run 10, loss 0.0123457
+epoch 33, run 20, loss 0.0457341
+epoch 33, run 30, loss 0.031262
+epoch 34, run 0, loss 0.0572826
+epoch 34, run 10, loss 0.021045
+epoch 34, run 20, loss 0.0340723
+epoch 34, run 30, loss 0.025998
+epoch 34, Validation acc: 46%
+epoch 35, run 0, loss 0.0250912
+epoch 35, run 10, loss 0.0156593
+epoch 35, run 20, loss 0.0289381
+epoch 35, run 30, loss 0.0140127
+epoch 36, run 0, loss 0.0218398
+epoch 36, run 10, loss 0.0116232
+epoch 36, run 20, loss 0.0274484
+epoch 36, run 30, loss 0.0162377
+epoch 36, Validation acc: 46%
+epoch 37, run 0, loss 0.0239668
+epoch 37, run 10, loss 0.0133786
+epoch 37, run 20, loss 0.0139258
+epoch 37, run 30, loss 0.0333648
+epoch 38, run 0, loss 0.0241658
+epoch 38, run 10, loss 0.0160988
+epoch 38, run 20, loss 0.0104409
+epoch 38, run 30, loss 0.0777062
+epoch 38, Validation acc: 46%
+epoch 39, run 0, loss 0.0160307
+epoch 39, run 10, loss 0.00667521
+epoch 39, run 20, loss 0.0259861
+epoch 39, run 30, loss 0.0615755
+epoch 40, run 0, loss 0.0289617
+epoch 40, run 10, loss 0.00563628
+epoch 40, run 20, loss 0.0450253
+epoch 40, run 30, loss 0.0155927
+epoch 40, Validation acc: 45.6%
+epoch 41, run 0, loss 0.0765792
+epoch 41, run 10, loss 0.00577721
+epoch 41, run 20, loss 0.0186156
+epoch 41, run 30, loss 0.0229119
+epoch 42, run 0, loss 0.0622164
+epoch 42, run 10, loss 0.0200193
+epoch 42, run 20, loss 0.0246365
+epoch 42, run 30, loss 0.0254452
+epoch 42, Validation acc: 45.6%
+epoch 43, run 0, loss 0.0193721
+epoch 43, run 10, loss 0.0153949
+epoch 43, run 20, loss 0.0296647
+epoch 43, run 30, loss 0.0262135
+epoch 44, run 0, loss 0.0187203
+epoch 44, run 10, loss 0.00288716
+epoch 44, run 20, loss 0.0182144
+epoch 44, run 30, loss 0.0429785
+epoch 44, Validation acc: 46.8%
+epoch 45, run 0, loss 0.0283036
+epoch 45, run 10, loss 0.00680249
+epoch 45, run 20, loss 0.0238396
+epoch 45, run 30, loss 0.0621012
+epoch 46, run 0, loss 0.0365907
+epoch 46, run 10, loss 0.00893317
+epoch 46, run 20, loss 0.028954
+epoch 46, run 30, loss 0.052611
+epoch 46, Validation acc: 45.2%
+epoch 47, run 0, loss 0.0492435
+epoch 47, run 10, loss 0.0168085
+epoch 47, run 20, loss 0.0149646
+epoch 47, run 30, loss 0.0378767
+epoch 48, run 0, loss 0.0513833
+epoch 48, run 10, loss 0.0185328
+epoch 48, run 20, loss 0.00773602
+epoch 48, run 30, loss 0.0331881
+epoch 48, Validation acc: 45.2%
+epoch 49, run 0, loss 0.0485136
+epoch 49, run 10, loss 0.0141977
+epoch 49, run 20, loss 0.0092623
+epoch 49, run 30, loss 0.0104832
+epoch 50, run 0, loss 0.029604
+epoch 50, run 10, loss 0.0176781
+epoch 50, run 20, loss 0.0102404
+epoch 50, run 30, loss 0.0257155
+epoch 50, Validation acc: 46.8%
+epoch 51, run 0, loss 0.0197226
+epoch 51, run 10, loss 0.0391993
+epoch 51, run 20, loss 0.00995761
+epoch 51, run 30, loss 0.0274981
+epoch 52, run 0, loss 0.00805301
+epoch 52, run 10, loss 0.0180115
+epoch 52, run 20, loss 0.00964633
+epoch 52, run 30, loss 0.0203499
+epoch 52, Validation acc: 45.2%
+epoch 53, run 0, loss 0.0273838
+epoch 53, run 10, loss 0.0211993
+epoch 53, run 20, loss 0.00598652
+epoch 53, run 30, loss 0.0188724
+epoch 54, run 0, loss 0.0201109
+epoch 54, run 10, loss 0.0128399
+epoch 54, run 20, loss 0.00899065
+epoch 54, run 30, loss 0.0122517
+epoch 54, Validation acc: 45.6%
+epoch 55, run 0, loss 0.0180055
+epoch 55, run 10, loss 0.00877305
+epoch 55, run 20, loss 0.00825826
+epoch 55, run 30, loss 0.00395367
+epoch 56, run 0, loss 0.0193091
+epoch 56, run 10, loss 0.010168
+epoch 56, run 20, loss 0.00584004
+epoch 56, run 30, loss 0.0087009
+epoch 56, Validation acc: 47.2%
+epoch 57, run 0, loss 0.00830543
+epoch 57, run 10, loss 0.0158712
+epoch 57, run 20, loss 0.00355337
+epoch 57, run 30, loss 0.0283608
+epoch 58, run 0, loss 0.00381735
+epoch 58, run 10, loss 0.0548861
+epoch 58, run 20, loss 0.00350675
+epoch 58, run 30, loss 0.0247927
+epoch 58, Validation acc: 46.4%
+epoch 59, run 0, loss 0.0132384
+epoch 59, run 10, loss 0.0456358
+epoch 59, run 20, loss 0.00607572
+epoch 59, run 30, loss 0.0129839
+epoch 60, run 0, loss 0.0259479
+epoch 60, run 10, loss 0.00751218
+epoch 60, run 20, loss 0.0125461
+epoch 60, run 30, loss 0.0153533
+epoch 60, Validation acc: 46%
+epoch 61, run 0, loss 0.0109153
+epoch 61, run 10, loss 0.0117138
+epoch 61, run 20, loss 0.00349025
+epoch 61, run 30, loss 0.0106903
+epoch 62, run 0, loss 0.014601
+epoch 62, run 10, loss 0.014289
+epoch 62, run 20, loss 0.00130042
+epoch 62, run 30, loss 0.0117591
+epoch 62, Validation acc: 46.4%
+epoch 63, run 0, loss 0.0179651
+epoch 63, run 10, loss 0.0144057
+epoch 63, run 20, loss 0.00371577
+epoch 63, run 30, loss 0.0141324
+epoch 64, run 0, loss 0.00820669
+epoch 64, run 10, loss 0.027927
+epoch 64, run 20, loss 0.00421655
+epoch 64, run 30, loss 0.00376957
+epoch 64, Validation acc: 46.8%
+epoch 65, run 0, loss 0.0120369
+epoch 65, run 10, loss 0.0477944
+epoch 65, run 20, loss 0.011149
+epoch 65, run 30, loss 0.00381086
+epoch 66, run 0, loss 0.0120687
+epoch 66, run 10, loss 0.0259173
+epoch 66, run 20, loss 0.009407
+epoch 66, run 30, loss 0.00432048
+epoch 66, Validation acc: 45.2%
+epoch 67, run 0, loss 0.00355518
+epoch 67, run 10, loss 0.0160341
+epoch 67, run 20, loss 0.00924156
+epoch 67, run 30, loss 0.00467672
+epoch 68, run 0, loss 0.00356014
+epoch 68, run 10, loss 0.0173865
+epoch 68, run 20, loss 0.0229939
+epoch 68, run 30, loss 0.00446042
+epoch 68, Validation acc: 46.8%
+epoch 69, run 0, loss 0.00475219
+epoch 69, run 10, loss 0.0045433
+epoch 69, run 20, loss 0.0284804
+epoch 69, run 30, loss 0.0068459
+epoch 70, run 0, loss 0.00334524
+epoch 70, run 10, loss 0.0176149
+epoch 70, run 20, loss nan
+epoch 70, run 30, loss nan
+epoch 70, Validation acc: 34.4%
+epoch 71, run 0, loss nan
+epoch 71, run 10, loss nan
+epoch 71, run 20, loss nan
+epoch 71, run 30, loss nan
+epoch 72, run 0, loss nan
+epoch 72, run 10, loss nan
+epoch 72, run 20, loss nan
+epoch 72, run 30, loss nan
+epoch 72, Validation acc: 34.4%
+epoch 73, run 0, loss nan
+epoch 73, run 10, loss nan
+epoch 73, run 20, loss nan
+epoch 73, run 30, loss nan
+epoch 74, run 0, loss nan
+epoch 74, run 10, loss nan
+epoch 74, run 20, loss nan
+epoch 74, run 30, loss nan
+epoch 74, Validation acc: 34.4%
+epoch 75, run 0, loss nan
+epoch 75, run 10, loss nan
+epoch 75, run 20, loss nan
+epoch 75, run 30, loss nan
+epoch 76, run 0, loss nan
+epoch 76, run 10, loss nan
+epoch 76, run 20, loss nan
+epoch 76, run 30, loss nan
+epoch 76, Validation acc: 34.4%
+epoch 77, run 0, loss nan
+epoch 77, run 10, loss nan
+epoch 77, run 20, loss nan
+epoch 77, run 30, loss nan
+epoch 78, run 0, loss nan
+epoch 78, run 10, loss nan
+epoch 78, run 20, loss nan
+epoch 78, run 30, loss nan
+epoch 78, Validation acc: 34.4%
+epoch 79, run 0, loss nan
+epoch 79, run 10, loss nan
+epoch 79, run 20, loss nan
+epoch 79, run 30, loss nan
+epoch 80, run 0, loss nan
+epoch 80, run 10, loss nan
+epoch 80, run 20, loss nan
+epoch 80, run 30, loss nan
+epoch 80, Validation acc: 34.4%
+epoch 81, run 0, loss nan
+epoch 81, run 10, loss nan
+epoch 81, run 20, loss nan
+epoch 81, run 30, loss nan
+epoch 82, run 0, loss nan
+epoch 82, run 10, loss nan
+epoch 82, run 20, loss nan
+epoch 82, run 30, loss nan
+epoch 82, Validation acc: 34.4%
+epoch 83, run 0, loss nan
+epoch 83, run 10, loss nan
+epoch 83, run 20, loss nan
+epoch 83, run 30, loss nan
+epoch 84, run 0, loss nan
+epoch 84, run 10, loss nan
+epoch 84, run 20, loss nan
+epoch 84, run 30, loss nan
+epoch 84, Validation acc: 34.4%
+epoch 85, run 0, loss nan
+epoch 85, run 10, loss nan
+epoch 85, run 20, loss nan
+epoch 85, run 30, loss nan
+epoch 86, run 0, loss nan
+epoch 86, run 10, loss nan
+epoch 86, run 20, loss nan
+epoch 86, run 30, loss nan
+epoch 86, Validation acc: 34.4%
+epoch 87, run 0, loss nan
+epoch 87, run 10, loss nan
+epoch 87, run 20, loss nan
+epoch 87, run 30, loss nan
+epoch 88, run 0, loss nan
+epoch 88, run 10, loss nan
+epoch 88, run 20, loss nan
+epoch 88, run 30, loss nan
+epoch 88, Validation acc: 34.4%
+epoch 89, run 0, loss nan
+epoch 89, run 10, loss nan
+epoch 89, run 20, loss nan
+epoch 89, run 30, loss nan
+epoch 90, run 0, loss nan
+epoch 90, run 10, loss nan
+epoch 90, run 20, loss nan
+epoch 90, run 30, loss nan
+epoch 90, Validation acc: 34.4%
+epoch 91, run 0, loss nan
+epoch 91, run 10, loss nan
+epoch 91, run 20, loss nan
+epoch 91, run 30, loss nan
+epoch 92, run 0, loss nan
+epoch 92, run 10, loss nan
+epoch 92, run 20, loss nan
+epoch 92, run 30, loss nan
+epoch 92, Validation acc: 34.4%
+epoch 93, run 0, loss nan
+epoch 93, run 10, loss nan
+epoch 93, run 20, loss nan
+epoch 93, run 30, loss nan
+epoch 94, run 0, loss nan
+epoch 94, run 10, loss nan
+epoch 94, run 20, loss nan
+epoch 94, run 30, loss nan
+epoch 94, Validation acc: 34.4%
+epoch 95, run 0, loss nan
+epoch 95, run 10, loss nan
+epoch 95, run 20, loss nan
+epoch 95, run 30, loss nan
+epoch 96, run 0, loss nan
+epoch 96, run 10, loss nan
+epoch 96, run 20, loss nan
+epoch 96, run 30, loss nan
+epoch 96, Validation acc: 34.4%
+epoch 97, run 0, loss nan
+epoch 97, run 10, loss nan
+epoch 97, run 20, loss nan
+epoch 97, run 30, loss nan
+epoch 98, run 0, loss nan
+epoch 98, run 10, loss nan
+epoch 98, run 20, loss nan
+epoch 98, run 30, loss nan
+epoch 98, Validation acc: 34.4%
+epoch 99, run 0, loss nan
+epoch 99, run 10, loss nan
+epoch 99, run 20, loss nan
+epoch 99, run 30, loss nan
+epoch 100, run 0, loss nan
+epoch 100, run 10, loss nan
+epoch 100, run 20, loss nan
+epoch 100, run 30, loss nan
+epoch 100, Validation acc: 34.4%
