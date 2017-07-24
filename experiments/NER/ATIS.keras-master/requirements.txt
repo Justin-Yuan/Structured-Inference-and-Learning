@@ -1,3 +1,0 @@
-progressbar2
-numpy
-keras
