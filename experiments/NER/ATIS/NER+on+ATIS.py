@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[14]:
+# In[20]:
 
 import numpy as np
 import pickle
@@ -23,7 +23,7 @@ from keras.callbacks import ModelCheckpoint, EarlyStopping
 
 # ## Load the data
 
-# In[2]:
+# In[60]:
 
 ### Load Data
 with open('atis.pkl', 'rb') as f:
@@ -36,123 +36,81 @@ idx2w  = {w2idx[k]:k for k in w2idx}
 idx2ne = {ne2idx[k]:k for k in ne2idx}
 idx2la = {labels2idx[k]:k for k in labels2idx}
 
-
-# In[3]:
-
-print(len(train_set), len(train_set[0]))
-print(len(labels2idx))
-print(sorted(list(labels2idx.values())))
-print(idx2ne[0])
+vocab_len = len(w2idx)
+# print(vocab_len)
+# print(len(labels2idx))
+# print(max(list(labels2idx.values())))
 
 
-# In[4]:
+# In[44]:
 
 train_x, train_ne, train_label = train_set
 val_x, val_ne, val_label = valid_set
 test_x, test_ne, test_label = test_set
 
-X = train_x + val_x + test_x
-ne = train_ne + val_ne + test_ne 
-label = train_label + val_label + test_label 
 
-# words_test = [ list(map(lambda x: idx2w[x], w)) for w in test_x]
-# groundtruth_test = [ list(map(lambda x: idx2la[x], y)) for y in test_label]
-# words_val = [ list(map(lambda x: idx2w[x], w)) for w in val_x]
-# groundtruth_val = [ list(map(lambda x: idx2la[x], y)) for y in val_label]
-# words_train = [ list(map(lambda x: idx2w[x], w)) for w in train_x]
-# groundtruth_train = [ list(map(lambda x: idx2la[x], y)) for y in train_label]
+# In[45]:
 
-
-# In[5]:
-
-print(type(X), type(label))
-print(X[0])
-print(label[0])
-for i in range(5):
-    print(len(X[i]))
-    print(X[i])
-print()
-for i in range(5):
-    print(len(label[i]))
-    print(label[i])
-
-
-# In[6]:
-
-maxlen = max([len(x) for x in X])
+X_full = train_x + val_x + test_x
+maxlen = max([len(x) for x in X_full])
 print('Maximum sequence length:', maxlen)
 
 
-# In[7]:
+# In[56]:
 
-def encode(x, n):
-    result = np.zeros(n)
-    result[x] = 1
-    return result
+def encode_one_hot(idx, dim):
+    temp = [0]*dim
+    temp[idx] = 1
+    return temp
+
+def encode_corpus(X, maxlen):
+    #X_enc = [[w2idx[word] for word in x] for x in X]
+    return pad_sequences(X, maxlen=maxlen, value=vocab_len)
+
+def encode_labels(Y, maxlen, dim):
+    #Y_enc = [[labels2idx[tag] for tag in y] for y in Y]
+    Y_enc = pad_sequences(Y, maxlen=maxlen, value=dim-1)
+    Y_enc = [[encode_one_hot(idx, dim) for idx in y] for y in Y_enc]
+    return np.array(Y_enc)
 
 
-# In[62]:
+# In[57]:
 
-max_features = max(list(w2idx.values()))
-print(max_features)
+dim = len(idx2la) + 1
+print(dim)
 
-X_enc = pad_sequences(X, maxlen=maxlen, value=max_features+1)
+X_enc = encode_corpus(train_x + val_x, maxlen)
+y_enc = encode_labels(train_label + val_label, maxlen, dim)
+
+X_test_enc = encode_corpus(test_x, maxlen)
+y_test_enc = encode_labels(test_label, maxlen, dim)
 
 
 # In[63]:
 
-print(type(X_enc))
-print(X_enc.shape)
-print(X_enc[:2])
-
-
-# In[64]:
-
-max_label = max(labels2idx.values()) + 1
-print(max_label)
-
-y_enc = [[0] * (maxlen - len(ey)) + [ey] for ey in label]
-y_enc = [[encode(c, max_label) for c in ey] for ey in y_enc]
-y_enc = pad_sequences(y_enc, maxlen=maxlen)
-
-
-# In[65]:
-
-print(y_enc[0])
-print(len(y_enc[0]))
-print(type(y_enc))
-print(y_enc.shape)
-
-
-# In[66]:
-
 validation_split = 0.1
-test_split = 0.1 
 
 indices = np.arange(X_enc.shape[0])
 np.random.shuffle(indices)
 X_enc = X_enc[indices]
 y_enc = y_enc[indices]
 num_validation_samples = int(validation_split * X_enc.shape[0])
-num_test_samples = int(test_split * X_enc.shape[0])
 
-X_train = X_enc[:-num_validation_samples-num_test_samples]
-y_train = y_enc[:-num_validation_samples-num_test_samples]
-X_val = X_enc[-num_validation_samples-num_test_samples:]
-y_val = y_enc[-num_validation_samples-num_test_samples:]
-X_test = X_enc[-num_test_samples:]
-y_test = y_enc[-num_test_samples:]
+X_train_enc = X_enc[:-num_validation_samples]
+y_train_enc = y_enc[:-num_validation_samples]
+X_val_enc = X_enc[-num_validation_samples:]
+y_val_enc = y_enc[-num_validation_samples:]
 
 
-# In[67]:
+# In[64]:
 
 print('Training and testing tensor shapes:')
-print(X_train.shape, X_val.shape, X_test.shape, y_train.shape, y_val.shape, y_test.shape)
+print(X_train_enc.shape, X_val_enc.shape, X_test_enc.shape, y_train_enc.shape, y_val_enc.shape, y_test_enc.shape)
 
 
 # ## Build the model
 
-# In[68]:
+# In[65]:
 
 # n_classes = len(idx2la)
 # n_vocab = len(idx2w)
@@ -160,12 +118,12 @@ print(X_train.shape, X_val.shape, X_test.shape, y_train.shape, y_val.shape, y_te
 max_features = len(w2idx)+1
 embedding_size = 100
 hidden_size = 32
-out_size = len(labels2idx)
+out_size = len(labels2idx) + 1
 batch_size = 32
 epochs = 10
 
 
-# In[69]:
+# In[66]:
 
 # Define model
 model = Sequential()
@@ -182,12 +140,12 @@ model.summary()
 
 # ## Train the model 
 
-# In[70]:
+# In[67]:
 
 model.compile('rmsprop', 'categorical_crossentropy')
 
 
-# In[71]:
+# In[68]:
 
 filepath = "models/NER-ATIS-{epoch:02d}-{val_loss:.2f}.hdf5"
 checkpoint = ModelCheckpoint(filepath, monitor='val_loss', verbose=1, save_best_only=True, mode='auto')
@@ -195,31 +153,35 @@ earlystopping = EarlyStopping(monitor='val_loss', min_delta=0, patience=3, verbo
 callbacks_list = [checkpoint, earlystopping]
 
 
-# In[72]:
+# In[ ]:
 
-model.fit(X_train, y_train, batch_size=batch_size, epochs=epochs,
-          validation_data=(X_val, y_val), callbacks=callbacks_list)
+model.fit(X_train_enc, y_train_enc, batch_size=batch_size, epochs=epochs,
+          validation_data=(X_val_enc, y_val_enc), callbacks=callbacks_list)
+
+
+# In[ ]:
+
+model.save('models/conv_model.h5')
 
 
 # ## Evaluate the model
 
-# In[41]:
+# In[73]:
 
-model = load_model('models/NER-ATIS-09-0.19.hdf5')
+model = load_model('models/conv_model.h5')
 model.summary()
 
 
-# In[42]:
+# In[74]:
 
-print(X_test[:2])
-score = model.evaluate(X_test, y_test, batch_size=batch_size, verbose=0)
+score = model.evaluate(X_test_enc, y_test_enc, batch_size=batch_size, verbose=0)
 print('Raw test score:', score)
 
 
-# In[20]:
+# In[75]:
 
 def score(yh, pr):
-    coords = [np.where(yhh < max_features+1)[0][0] for yhh in yh]
+    coords = [np.where(yhh < vocab_len)[0][0] for yhh in yh]
     yh = [yhh[co:] for yhh, co in zip(yh, coords)]
     ypr = [prr[co:] for prr, co in zip(pr, coords)]
     fyh = [c for row in yh for c in row]
@@ -227,21 +189,21 @@ def score(yh, pr):
     return fyh, fpr
 
 
-# In[27]:
+# In[76]:
 
 # On the validation set 
 
-pr = model.predict(X_val)
+pr = model.predict(X_val_enc)
 pr = pr.argmax(2)
 print(pr.shape)
 print(pr[0])
 print(pr[0][0])
-yh = y_test.argmax(2)
+yh = y_val_enc.argmax(2)
 print(yh.shape)
 print(yh[0])
 
 
-# In[28]:
+# In[77]:
 
 fyh, fpr = score(yh, pr)
 print('Testing accuracy:', accuracy_score(fyh, fpr))
@@ -249,20 +211,20 @@ print('Testing confusion matrix:')
 print(confusion_matrix(fyh, fpr))
 
 
-# In[25]:
+# In[78]:
 
 # On the test set 
-pr = model.predict(X_test)
+pr = model.predict(X_test_enc)
 pr = pr.argmax(2)
 print(pr.shape)
 print(pr[0])
 print(pr[0][0])
-yh = y_test.argmax(2)
+yh = y_test_enc.argmax(2)
 print(yh.shape)
 print(yh[0])
 
 
-# In[26]:
+# In[79]:
 
 fyh, fpr = score(yh, pr)
 print('Testing accuracy:', accuracy_score(fyh, fpr))
