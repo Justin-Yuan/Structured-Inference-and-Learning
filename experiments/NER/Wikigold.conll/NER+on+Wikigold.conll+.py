@@ -3,7 +3,7 @@
 
 # Reference: https://gist.github.com/dirko/1d596ca757a541da96ac3caa6f291229
 
-# In[5]:
+# In[25]:
 
 import pickle 
 import numpy as np 
@@ -14,6 +14,7 @@ from sklearn.metrics import confusion_matrix, accuracy_score
 
 from keras.models import Sequential
 from keras.preprocessing.sequence import pad_sequences
+from keras.models import load_model
 
 # from keras.layers.recurrent import LSTM
 # from keras.layers.core import Activation, Dense, Input
@@ -31,13 +32,13 @@ from keras.backend import tf
 
 # ## Load the data
 
-# In[6]:
+# In[26]:
 
 with open('conll.pkl', 'rb') as f:
     data = pickle.load(f)
 
 
-# In[7]:
+# In[27]:
 
 X = data['X']
 y = data['y']
@@ -47,7 +48,7 @@ label2ind = data['label2ind']
 ind2label = data['ind2label']
 
 
-# In[8]:
+# In[28]:
 
 print(len(X))
 print(len(X[0]))
@@ -61,7 +62,7 @@ print(label2ind)
 print(ind2label)
 
 
-# In[9]:
+# In[29]:
 
 def encode(x, n):
     result = np.zeros(n)
@@ -69,7 +70,7 @@ def encode(x, n):
     return result
 
 
-# In[10]:
+# In[30]:
 
 maxlen = max([len(x) for x in X])
 print('Maximum sequence length:', maxlen)
@@ -80,13 +81,13 @@ X_enc = pad_sequences(X_enc, maxlen=maxlen)
 # X_enc_b = pad_sequences(X_enc_reverse, maxlen=maxlen)
 
 
-# In[11]:
+# In[31]:
 
 print(type(X_enc))
 print(X_enc.shape)
 
 
-# In[9]:
+# In[32]:
 
 max_label = max(label2ind.values()) + 1
 print(max_label)
@@ -104,7 +105,7 @@ print(y_enc.shape)
 #                                                test_size=11*32, train_size=45*32, random_state=42)
 
 
-# In[10]:
+# In[33]:
 
 validation_split = 0.1
 test_split = 0.1 
@@ -124,7 +125,7 @@ X_test = X_enc[-num_test_samples:]
 y_test = y_enc[-num_test_samples:]
 
 
-# In[11]:
+# In[34]:
 
 print('Training and testing tensor shapes:')
 print(X_train.shape, X_val.shape, X_test.shape, y_train.shape, y_val.shape, y_test.shape)
@@ -132,7 +133,7 @@ print(X_train.shape, X_val.shape, X_test.shape, y_train.shape, y_val.shape, y_te
 
 # ## Build the model 
 
-# In[4]:
+# In[35]:
 
 max_features = len(word2ind)
 embedding_size = 128
@@ -142,7 +143,7 @@ batch_size = 32
 epochs = 30
 
 
-# In[3]:
+# In[36]:
 
 model = Sequential()
 model.add(Embedding(input_dim=max_features, output_dim=embedding_size,
@@ -156,12 +157,12 @@ model.summary()
 
 # ## Train the model 
 
-# In[14]:
+# In[37]:
 
 model.compile(loss='categorical_crossentropy', optimizer='adam')
 
 
-# In[19]:
+# In[ ]:
 
 filepath = "models/NER-Wikigold-{epoch:02d}-{val_loss:.2f}.hdf5"
 checkpoint = ModelCheckpoint(filepath, monitor='val_loss', verbose=1, save_best_only=True, mode='auto')
@@ -169,7 +170,7 @@ earlystopping = EarlyStopping(monitor='val_loss', min_delta=0, patience=10, verb
 callbacks_list = [checkpoint, earlystopping]
 
 
-# In[20]:
+# In[ ]:
 
 model.fit(X_train, y_train, batch_size=batch_size, epochs=epochs,
           validation_data=(X_val, y_val), callbacks=callbacks_list)
@@ -177,13 +178,18 @@ model.fit(X_train, y_train, batch_size=batch_size, epochs=epochs,
 
 # ## Evaluate the model
 
-# In[21]:
+# In[ ]:
+
+model = load_model('models/NER-Wikigold-09-0.08.hdf5')
+
+
+# In[ ]:
 
 score = model.evaluate(X_test, y_test, batch_size=batch_size, verbose=1)
 print('Raw test score:', score)
 
 
-# In[22]:
+# In[ ]:
 
 def score(yh, pr):
     coords = [np.where(yhh > 0)[0][0] for yhh in yh]
@@ -194,21 +200,21 @@ def score(yh, pr):
     return fyh, fpr
 
 
-# In[29]:
+# In[ ]:
 
 # On the training set ]
 
 pr = model.predict(X_train)
 pr = pr.argmax(2)
 print(pr.shape)
-print(pr[0])
+print(pr[1])
 print(pr[0][0])
 yh = y_train.argmax(2)
 print(yh.shape)
-print(yh[0])
+print(yh[1])
 
 
-# In[30]:
+# In[ ]:
 
 fyh, fpr = score(yh, pr)
 print('Testing accuracy:', accuracy_score(fyh, fpr))
@@ -216,7 +222,7 @@ print('Testing confusion matrix:')
 print(confusion_matrix(fyh, fpr))
 
 
-# In[27]:
+# In[ ]:
 
 # On the validatiotn set
 
@@ -230,7 +236,7 @@ print(yh.shape)
 print(yh[0])
 
 
-# In[28]:
+# In[ ]:
 
 fyh, fpr = score(yh, pr)
 print('Testing accuracy:', accuracy_score(fyh, fpr))
@@ -238,7 +244,7 @@ print('Testing confusion matrix:')
 print(confusion_matrix(fyh, fpr))
 
 
-# In[25]:
+# In[ ]:
 
 # On the test set 
 pr = model.predict(X_test)
@@ -251,7 +257,7 @@ print(yh.shape)
 print(yh[0])
 
 
-# In[24]:
+# In[ ]:
 
 fyh, fpr = score(yh, pr)
 print('Testing accuracy:', accuracy_score(fyh, fpr))
