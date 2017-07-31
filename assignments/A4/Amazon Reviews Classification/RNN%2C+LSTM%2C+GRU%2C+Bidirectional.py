@@ -66,7 +66,7 @@ class RNNClassifier(Classifier):
         x = LSTM(50, dropout=0.2, recurrent_dropout=0.2)(embedded_sequences)
         preds = Dense(6, activation='softmax')(x)
         model_lstm_final_state = Model(sequence_input, preds)
-        print(model_lstm_final_state)
+        return model_lstm_final_state
     
     def build_gru(self):
         """
@@ -93,7 +93,7 @@ class RNNClassifier(Classifier):
         """
         if self.type == 'simple':
             optimizer = optimizers.Adam(clipnorm=1.)
-        super(RNNClassifier, self).train(optimizer=optimizer, model_base_path=model_base_path)
+        super(RNNClassifier, self).train(optimizer=optimizer)
 
 
 # In[ ]:
@@ -102,13 +102,13 @@ if __name__ == "__main__":
     """ test different RNN models
     """
     
-    # Simple RNN with gradient clipping
-    simple_RNN = RNNClassifier(batch_size=128, epochs=2, raw_data_path=None, embedded_data_path='data/data_and_embedding100.npz', embedding_dim=100, rnn_type='simple')
-    simple_RNN.build()
-    simple_RNN.train()
-    print("constructed simple RNN classifier")
-    simple_RNN.evaluate()
-    print("simple RNN classifier evaluated")
+    # # Simple RNN with gradient clipping
+    # simple_RNN = RNNClassifier(batch_size=128, epochs=2, raw_data_path=None, embedded_data_path='data/data_and_embedding100.npz', embedding_dim=100, rnn_type='simple')
+    # simple_RNN.build()
+    # simple_RNN.train()
+    # print("constructed simple RNN classifier")
+    # simple_RNN.evaluate()
+    # print("simple RNN classifier evaluated")
     
     # LSTM 
     lstm = RNNClassifier(batch_size=128, epochs=2, raw_data_path=None, embedded_data_path='data/data_and_embedding100.npz', embedding_dim=100, rnn_type='lstm')

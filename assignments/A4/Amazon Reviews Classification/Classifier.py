@@ -121,9 +121,7 @@ class Classifier(object):
     def train(self, loss='categorical_crossentropy', optimizer='adam', model_base_path="models/"):
         """
         """
-        self.model.compile(loss=loss,
-              optimizer=optimizer,
-              metrics=['acc'])
+        self.model.compile(loss=loss, optimizer=optimizer, metrics=['acc'])
         
         if self.type != None:
             model_base_path += self.type + '/'
