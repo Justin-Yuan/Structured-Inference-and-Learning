@@ -9,6 +9,7 @@ import tensorflow as tf
 
 import os
 import sys
+import time
 
 from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
@@ -21,16 +22,16 @@ from keras.layers import SimpleRNN, GRU, LSTM, Bidirectional
 import keras.backend as K
 from keras import optimizers
 
+from Classifier import Classifier
+
 
 # In[1]:
 
-class RNNClassifier():
+class RNNClassifier(Classifier):
     """
     """
-    def __init__(self, batch_size, epochs, raw_data_path=None, embedded_data_path='data/data_and_embedding100.npz',
-                 embedding_dim=100, rnn_type='lstm'):
-        super(RNNClassifier, self).__init__(batch_size, epochs, raw_data_path=None,
-                embedded_data_path=embedded_data_path, embedding_dim=embedding_dim) 
+    def __init__(self, batch_size, epochs, raw_data_path=None, embedded_data_path='data/data_and_embedding100.npz', embedding_dim=100, rnn_type='lstm'):
+        super(RNNClassifier, self).__init__(batch_size, epochs, raw_data_path=None, embedded_data_path=embedded_data_path, embedding_dim=embedding_dim) 
         
         # get the RNN model type 
         self.type = rnn_type
@@ -50,7 +51,7 @@ class RNNClassifier():
     def build_simple_rnn(self):
         """
         """
-        sequence_input = Input(shape=(max_sequence_length, ), dtype='int32')
+        sequence_input = Input(shape=(self.max_sequence_length, ), dtype='int32')
         embedded_sequences = self.embedding_layer(sequence_input)
         x = SimpleRNN(50, dropout=0.2, recurrent_dropout=0.2)(embedded_sequences)
         preds = Dense(6, activation='softmax')(x)
@@ -60,7 +61,7 @@ class RNNClassifier():
     def build_lstm(self):
         """
         """
-        sequence_input = Input(shape=(max_sequence_length, ), dtype='int32')
+        sequence_input = Input(shape=(self.max_sequence_length, ), dtype='int32')
         embedded_sequences = self.embedding_layer(sequence_input)
         x = LSTM(50, dropout=0.2, recurrent_dropout=0.2)(embedded_sequences)
         preds = Dense(6, activation='softmax')(x)
@@ -70,7 +71,7 @@ class RNNClassifier():
     def build_gru(self):
         """
         """
-        sequence_input = Input(shape=(max_sequence_length, ), dtype='int32')
+        sequence_input = Input(shape=(self.max_sequence_length, ), dtype='int32')
         embedded_sequences = self.embedding_layer(sequence_input)
         x = GRU(50, dropout=0.2, recurrent_dropout=0.2)(embedded_sequences)
         preds = Dense(6, activation='softmax')(x)
@@ -80,7 +81,7 @@ class RNNClassifier():
     def build_bidirectional_lstm(self):
         """
         """
-        sequence_input = Input(shape=(max_sequence_length, ), dtype='int32')
+        sequence_input = Input(shape=(self.max_sequence_length, ), dtype='int32')
         embedded_sequences = self.embedding_layer(sequence_input)
         x = Bidirectional(LSTM(50, dropout=0.2, recurrent_dropout=0.2))(embedded_sequences)
         preds = Dense(6, activation='softmax')(x)
@@ -92,15 +93,7 @@ class RNNClassifier():
         """
         if self.type == 'simple':
             optimizer = optimizers.Adam(clipnorm=1.)
-        model_base_path += self.type + '/'
         super(RNNClassifier, self).train(optimizer=optimizer, model_base_path=model_base_path)
-    
-    def save(self, path='models/model.h5'):
-        """
-        """
-        path = 'models/'
-        path += self.type + '/model.h5'
-        super(RNNClassifier, self).save(path=path)
 
 
 # In[ ]:
@@ -110,8 +103,7 @@ if __name__ == "__main__":
     """
     
     # Simple RNN with gradient clipping
-    simple_RNN = RNNClassifier(batch_size=128, epochs=10, raw_data_path=None,
-                        embedded_data_path='data/data_and_embedding100.npz', embedding_dim=100, rnn_type='simple')
+    simple_RNN = RNNClassifier(batch_size=128, epochs=2, raw_data_path=None, embedded_data_path='data/data_and_embedding100.npz', embedding_dim=100, rnn_type='simple')
     simple_RNN.build()
     simple_RNN.train()
     print("constructed simple RNN classifier")
@@ -119,8 +111,7 @@ if __name__ == "__main__":
     print("simple RNN classifier evaluated")
     
     # LSTM 
-    lstm = RNNClassifier(batch_size=128, epochs=10, raw_data_path=None,
-                        embedded_data_path='data/data_and_embedding100.npz', embedding_dim=100, rnn_type='lstm')
+    lstm = RNNClassifier(batch_size=128, epochs=2, raw_data_path=None, embedded_data_path='data/data_and_embedding100.npz', embedding_dim=100, rnn_type='lstm')
     lstm.build()
     lstm.train()
     print("constructed LSTM classifier")
@@ -128,8 +119,7 @@ if __name__ == "__main__":
     print("LSTM classifier evaluated")
     
     # GRU
-    gru = RNNClassifier(batch_size=128, epochs=10, raw_data_path=None,
-                        embedded_data_path='data/data_and_embedding100.npz', embedding_dim=100, rnn_type='gru')
+    gru = RNNClassifier(batch_size=128, epochs=2, raw_data_path=None, embedded_data_path='data/data_and_embedding100.npz', embedding_dim=100, rnn_type='gru')
     gru.build()
     gru.train()
     print("constructed GRU classifier")
@@ -137,8 +127,7 @@ if __name__ == "__main__":
     print("GRU classifier evaluated")
     
     # Bidirectional LSTM
-    bidirectional_lstm = RNNClassifier(batch_size=128, epochs=10, raw_data_path=None,
-                        embedded_data_path='data/data_and_embedding100.npz', embedding_dim=100, rnn_type='bidirectional')
+    bidirectional_lstm = RNNClassifier(batch_size=128, epochs=2, raw_data_path=None, embedded_data_path='data/data_and_embedding100.npz', embedding_dim=100, rnn_type='bidirectional')
     bidirectional_lstm.build()
     bidirectional_lstm.train()
     print("constructed bidirectional LSTM classifier")

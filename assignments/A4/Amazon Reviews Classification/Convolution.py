@@ -47,22 +47,6 @@ class ConvClassifier(Classifier):
         x = Dense(128, activation='relu')(x)
         preds = Dense(6, activation='softmax')(x)
         self.model = Model(sequence_input, preds)
-        self.model.summary()
-
-    def train(self, loss='categorical_crossentropy', optimizer='adam', model_base_path="models/"):
-        """ for Simple RNN, the optimizer needs to implement gradients clipping to prevent explosion 
-        """
-        if self.type == 'simple':
-            optimizer = optimizers.Adam(clipnorm=1.)
-        model_base_path += self.type + '/'
-        super(ConvClassifier, self).train(optimizer=optimizer, model_base_path=model_base_path)
-    
-    def save(self, path='models/model.h5'):
-        """
-        """
-        path = 'models/'
-        path += self.type + '/model.h5'
-        super(ConvClassifier, self).save(path=path)
 
 # In[3]:
 
@@ -70,7 +54,7 @@ if __name__ == "__main__":
     """ test the convolution classifier
     """
     
-    conv_classifier = ConvClassifier(batch_size=128, epochs=10, raw_data_path=None, embedded_data_path='data/data_and_embedding100.npz', embedding_dim=100)
+    conv_classifier = ConvClassifier(batch_size=128, epochs=2, raw_data_path=None, embedded_data_path='data/data_and_embedding100.npz', embedding_dim=100)
     conv_classifier.build()
     conv_classifier.train()
     print("constructed convolution classifier")

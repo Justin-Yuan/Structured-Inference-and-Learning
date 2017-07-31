@@ -15,6 +15,7 @@ from keras.utils import to_categorical
 from keras.models import Model
 from keras.layers import Input, Dense, Flatten, Lambda
 from keras.layers import Conv1D, MaxPooling1D, Embedding
+from keras.callbacks import ModelCheckpoint
 
 import keras.backend as K
 
@@ -35,6 +36,9 @@ class Classifier(object):
         self.y_train = None 
         self.y_val = None 
         self.y_test = None 
+
+        # model type 
+        self.type = None 
         
         # load data selectively 
         if raw_data_path != None:
@@ -121,6 +125,8 @@ class Classifier(object):
               optimizer=optimizer,
               metrics=['acc'])
         
+        if self.type != None:
+            model_base_path += self.type + '/'
         filepath= model_base_path + "weights-improvement-{epoch:02d}-{acc:.2f}-{val_acc:.2f}.hdf5"
         checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
         callbacks_list = [checkpoint]
@@ -149,7 +155,6 @@ class Classifier(object):
             res = self.model.evaluate(x_test_data, y_test_data, verbose=0)
         print("accuracy is %.2f" % (res[1]*100), end='')  # model.metrics_names[1] is acc
         print('%')
-        
 
     def summary(self):
         """ get model summary if it exists
@@ -158,9 +163,12 @@ class Classifier(object):
             self.model.summary()
         except:
             print("model summary is not available")
-
+    
     def save(self, path='models/model.h5'):
-        """ save the trained model to the 'models/' directory
         """
+        """
+        if self.type != None:
+            path = 'models/'
+            path += self.type + '/model.h5'
         self.model.save(path)
     
