@@ -57,7 +57,7 @@ if __name__ == "__main__":
     """ test the hybird classifier with Convolution + LSTM
     """
     
-    conv_lstm = HybridClassifier(batch_size=128, epochs=10, raw_data_path=None, embedded_data_path='data/data_and_embedding100.npz', embedding_dim=100)
+    conv_lstm = HybridClassifier(batch_size=128, epochs=20, raw_data_path=None, embedded_data_path='data/data_and_embedding100.npz', embedding_dim=100)
     conv_lstm.build()
     conv_lstm.train()
     print("constructed Convolution + LSTM classifier")

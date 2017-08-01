@@ -110,16 +110,16 @@ if __name__ == "__main__":
     # simple_RNN.evaluate()
     # print("simple RNN classifier evaluated")
     
-    # LSTM 
-    lstm = RNNClassifier(batch_size=128, epochs=2, raw_data_path=None, embedded_data_path='data/data_and_embedding100.npz', embedding_dim=100, rnn_type='lstm')
-    lstm.build()
-    lstm.train()
-    print("constructed LSTM classifier")
-    lstm.evaluate()
-    print("LSTM classifier evaluated")
+    # # LSTM 
+    # lstm = RNNClassifier(batch_size=128, epochs=2, raw_data_path=None, embedded_data_path='data/data_and_embedding100.npz', embedding_dim=100, rnn_type='lstm')
+    # lstm.build()
+    # lstm.train()
+    # print("constructed LSTM classifier")
+    # lstm.evaluate()
+    # print("LSTM classifier evaluated")
     
     # GRU
-    gru = RNNClassifier(batch_size=128, epochs=2, raw_data_path=None, embedded_data_path='data/data_and_embedding100.npz', embedding_dim=100, rnn_type='gru')
+    gru = RNNClassifier(batch_size=128, epochs=20, raw_data_path=None, embedded_data_path='data/data_and_embedding100.npz', embedding_dim=100, rnn_type='gru')
     gru.build()
     gru.train()
     print("constructed GRU classifier")
@@ -127,7 +127,7 @@ if __name__ == "__main__":
     print("GRU classifier evaluated")
     
     # Bidirectional LSTM
-    bidirectional_lstm = RNNClassifier(batch_size=128, epochs=2, raw_data_path=None, embedded_data_path='data/data_and_embedding100.npz', embedding_dim=100, rnn_type='bidirectional')
+    bidirectional_lstm = RNNClassifier(batch_size=128, epochs=20, raw_data_path=None, embedded_data_path='data/data_and_embedding100.npz', embedding_dim=100, rnn_type='bidirectional')
     bidirectional_lstm.build()
     bidirectional_lstm.train()
     print("constructed bidirectional LSTM classifier")

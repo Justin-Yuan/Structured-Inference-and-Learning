@@ -90,7 +90,7 @@ if __name__ == "__main__":
     """ test the hybird classifier with Convolution + LSTM
     """
     
-    attention_model = WordAttentionClassifier(batch_size=128, epochs=10, raw_data_path=None, embedded_data_path='data/data_and_embedding100.npz', embedding_dim=100)
+    attention_model = WordAttentionClassifier(batch_size=128, epochs=20, raw_data_path=None, embedded_data_path='data/data_and_embedding100.npz', embedding_dim=100)
     attention_model.build()
     attention_model.train()
     print("constructed Word Attention classifier")
