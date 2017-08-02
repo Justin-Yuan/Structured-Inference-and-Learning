@@ -107,12 +107,12 @@ def compare_prediction_groundtruth(model, X, y, verbose=True, indices=None):
     print('Confusion matrix:')
     print(cm, end='\n\n')
     
-    if verbose and indices != None:315801/315801 [==============================] - 305s - loss: 0.4538 -
+    if verbose and indices != None:
         yh, ypr = unpad_sequences(yh, pr)
         for idx in indices:
             print('test sample', idx)
             print([ind2label[index] for index in yh[idx]])
-            print([ind2label[index] for index in ypr[idx], end='\n\n')
+            print([ind2label[index] for index in ypr[idx]], end='\n\n')
     return acc, cm
 
 def get_TP_FP_FN(cm, label):
@@ -230,10 +230,11 @@ if __name__ == "__main__":
         tn = 
             validation_data=(X_val_enc, y_val_enc), callbacks=callbacks_list)
 
-    model.save('models/conv_model.h5')
+    model.save('models/POS_Conll.h5')
 
 
     # evaluate the model 
+    model = load_model('models/POS_Conll.h5')
 
     # constructing test data 
     X_test_enc = encode_corpus(X_test, maxlen)
