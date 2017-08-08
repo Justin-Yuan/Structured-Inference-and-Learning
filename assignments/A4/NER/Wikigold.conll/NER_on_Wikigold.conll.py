@@ -49,7 +49,7 @@ def score(yh, pr):
     fpr = [c for row in ypr for c in row]
     return fyh, fpr
 
-def compare_prediction_groundtruth(model, X, y, verbose=True, indices=None):
+def compare_prediction_groundtruth(model, X, y, ind2label, verbose=True, indices=None):
     """ show evaluation results, including prediction accuracy (word-wise) and the confusion matrix, 
         optionally showing the predicted tags and groundtruth tags for a chosen set of samples (a list of indices as an argument)
     """
@@ -110,7 +110,7 @@ def get_evaluation_statistics(ind2label, label=0):
     print("evaluation statistics for label", label, ind2label[label])
     tp, fp, fn = get_TP_FP_FN(cm, label)
     print("True positives", tp, " , False positives", fp, " , False negatives", fn)
-    precison = get_precision(cm, label)
+    precision = get_precision(cm, label)
     print("Precision", precision)
     recall = get_recall(cm, label)
     print("Recall", recall)
@@ -120,7 +120,7 @@ def get_evaluation_statistics(ind2label, label=0):
 
 
 
-if __name__ == "__mai__":
+if __name__ == "__main__":
     """ NER on Wikigold.conll dataset
     """
 
@@ -129,15 +129,16 @@ if __name__ == "__mai__":
     with open('data/conll.pkl', 'rb') as f:
         data = pickle.load(f)
 
-    X = data['X']
-    y = data['y']
-    word2ind = data['word2ind']
-    ind2word = data['ind2word']
-    label2ind = data['label2ind']
-    ind2label = data['ind2label']
+    X = data['train']['X']
+    y = data['train']['y']
+    X_test = data['test']['X']
+    y_test = data['test']['y']
+    word2ind = data['stats']['word2ind']
+    ind2word = data['stats']['ind2word']
+    label2ind = data['stats']['label2ind']
+    ind2label = data['stats']['ind2label']
 
-    maxlen = max([le# In[ ]:
-    n(x) for x in X])
+    maxlen = max([len(x) for x in X])
     print('Maximum sequence length:', maxlen)
 
     X_enc = [[word2ind[c] for c in x] for x in X]
@@ -150,66 +151,31 @@ if __name__ == "__mai__":
     y_enc = pad_sequences(y_enc, maxlen=maxlen)
 
 
+    # construct the test data 
+
+    X_test_enc = [[word2ind[c] for c in x] for x in X_test]
+    X_test = pad_sequences(X_test_enc, maxlen=maxlen)
+
+    y_test_enc = [[0] * (maxlen - len(ey)) + [label2ind[c] for c in ey] for ey in y_test]
+    y_test_enc = [[encode(c, max_label) for c in ey] for ey in y_test_enc]
+    y_test = pad_sequences(y_test_enc, maxlen=maxlen)
+
+
     # split the current training set into a training set and a validation set 
 
     validation_split = 0.1
-    test_split = 0.1 
 
     indices = np.arange(X_enc.shape[0])
     np.random.shuffle(indices)
     X_enc = X_enc[indices]
     y_enc = y_enc[indices]
     num_validation_samples = int(validation_split * X_enc.shape[0])
-    num_test_samples = int(test_split * X_enc.shape[0])
 
-    X_train = X_enc[:-num_validation_samples-num_test_samples]
-    y_train = y_enc[:-num_validation_samples-num_test_samples]
-    X_val = X_enc[-num_validation_samples-num_test_samples:]
-    y_val = y_enc[-num_validation_samples-num    # Load the data
-
-    with open('data/conll.pkl', 'rb') as f:
-        data = pickle.load(f)
-
-    X = data['X']
-    y = data['y']
-    word2ind = data['word2ind']
-    ind2word = data['ind2word']
-    label2ind = data['label2ind']
-    ind2label = data['ind2label']
-
-    maxlen = max([le# In[ ]:
-    n(x) for x in X])
-    print('Maximum sequence length:', maxlen)
-
-    X_enc = [[word2ind[c] for c in x] for x in X]
-    X_enc = pad_sequences(X_enc, maxlen=maxlen)
-
-    max_label = max(label2ind.values()) + 1
-
-    y_enc = [[0] * (maxlen - len(ey)) + [label2ind[c] for c in ey] for ey in y]
-    y_enc = [[encode(c, max_label) for c in ey] for ey in y_enc]
-    y_enc = pad_sequences(y_enc, maxlen=maxlen)
-
-
-    # split the current training set into a training set and a validation set 
-
-    validation_split = 0.1
-    test_split = 0.1 
-
-    indices = np.arange(X_enc.shape[0])
-    np.random.shuffle(indices)
-    X_enc = X_enc[indices]
-    y_enc = y_enc[indices]
-    num_validation_samples = int(validation_split * X_enc.shape[0])
-    num_test_samples = int(test_split * X_enc.shape[0])
-
-    X_train = X_enc[:-num_validation_samples-num_test_samples]
-    y_train = y_enc[:-num_validation_samples-num_test_samples]
-    X_val = X_enc[-num_validation_samples-num_test_samples:]
-    y_val = y_enc[-num_validation_samples-num_test_samples:]
-    X_test = X_enc[-num_test_samples:]
-    y_test = y_enc[-num_test_samples:]
-
+    X_train = X_enc[:-num_validation_samples]
+    y_train = y_enc[:-num_validation_samples]
+    X_val = X_enc[-num_validation_samples:]
+    y_val = y_enc[-num_validation_samples:]
+        
     print("sample distributions: ")
     print("# of training:", X_train.shape[0], ", # of validation:", X_val.shape[0], ", # of test", X_test.shape[0])
 
@@ -219,12 +185,12 @@ if __name__ == "__mai__":
 
     # Build the model 
     # model hyperparameters
-    max_features = len(word2ind)
+    max_features = len(word2ind)+1
     embedding_size = 128
     hidden_size = 32
     out_size = len(label2ind) + 1
     batch_size = 32
-    epochs = 30
+    epochs = 10
 
     # model architecture
     model = Sequential()
@@ -245,7 +211,8 @@ if __name__ == "__mai__":
     checkpoint = ModelCheckpoint(filepath, monitor='val_loss', verbose=1, save_best_only=True, mode='auto')
     earlystopping = EarlyStopping(monitor='val_loss', min_delta=0, patience=10, verbose=1, mode='auto')
     callbacks_list = [checkpoint, earlystopping]
-    to get NER classifications
+    
+    # to get NER classifications
 
     model.fit(X_train, y_train, batch_size=batch_size, epochs=epochs,
             validation_data=(X_val, y_val), callbacks=callbacks_list)
@@ -257,11 +224,11 @@ if __name__ == "__mai__":
     model = load_model('models/NER_Wikigold.h5')
 
     # get the test set score (categorical crossentropy / loss), not USEFUL 
-    score = model.evaluate(X_test, y_test, batch_size=batch_size, verbose=1)
-    print('Raw test score:', score)
+    test_score = model.evaluate(X_test, y_test, batch_size=batch_size, verbose=1)
+    print('Raw test score:', test_score)
 
     # shows accuracy of the model on a word level and the confusion matrix of the test set 
-    acc, cm = compare_prediction_groundtruth(model, X_test, y_test, True, indices=[1,2,3])
+    acc, cm = compare_prediction_groundtruth(model, X_test, y_test, ind2label, True, indices=[1,2,3])
 
     # show evaluation statistics of chosen labels
     labels = [1, 2, 3]

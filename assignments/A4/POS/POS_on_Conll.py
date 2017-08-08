@@ -91,13 +91,13 @@ def score(yh, pr):
     fpr = [c for row in ypr for c in row]
     return fyh, fpr
 
-def compare_prediction_groundtruth(model, X, y, verbose=True, indices=None):
+def compare_prediction_groundtruth(model, X, y, ind2label, verbose=True, indices=None):
     """ show evaluation results, including prediction accuracy (word-wise) and the confusion matrix, 
         optionally showing the predicted tags and groundtruth tags for a chosen set of samples (a list of indices as an argument)
     """
     pr = model.predict(X) 
-    pr = pr.argmax(2)
-    yh = y.argmax(2)
+    pr = np.argmax(pr, axis=2)
+    yh = np.argmax(y, axis=2)
     fyh, fpr = score(yh, pr)
     # get accuracy score 
     acc = accuracy_score(fyh, fpr)
@@ -152,7 +152,7 @@ def get_evaluation_statistics(ind2label, label=0):
     print("evaluation statistics for label", label, ind2label[label])
     tp, fp, fn = get_TP_FP_FN(cm, label)
     print("True positives", tp, " , False positives", fp, " , False negatives", fn)
-    precison = get_precision(cm, label)
+    precision = get_precision(cm, label)
     print("Precision", precision)
     recall = get_recall(cm, label)
     print("Recall", recall)
@@ -186,7 +186,7 @@ if __name__ == "__main__":
 
 
     # Map to indices / encode texts and tagging labels 
-
+    dim = len(ind2label) + 1    # plus one for the padded 0 label 
     X_train_enc = encode_corpus(X_train, maxlen)
     y_train_enc = encode_labels(tags_train, maxlen, dim)
 
@@ -226,9 +226,7 @@ if __name__ == "__main__":
 
     # model training, with validation and callback functions (checkpoint the best model based on validatoin loss 
     #                                                         and apply early stopping if no improvement is shown in 8 consecutive epochs)
-    model.fit(X_train_enc, y_train_enc, batch_size=batch_size, epochs=epochs,        # TN
-        tn = 
-            validation_data=(X_val_enc, y_val_enc), callbacks=callbacks_list)
+    model.fit(X_train_enc, y_train_enc, batch_size=batch_size, epochs=epochs, validation_data=(X_val_enc, y_val_enc), callbacks=callbacks_list)
 
     model.save('models/POS_Conll.h5')
 
@@ -238,14 +236,14 @@ if __name__ == "__main__":
 
     # constructing test data 
     X_test_enc = encode_corpus(X_test, maxlen)
-    y_test_enc = encode_labels(tags_test, maxlen, dim)categorical_crossentropy
+    y_test_enc = encode_labels(tags_test, maxlen, dim)
 
     # return the test set score(categorical_crossentropy / loss), NOT USEFUL  
-    score = model.evaluate(X_test_enc, y_test_enc, batch_size=batch_size, verbose=0)
-    print('Raw test score:', score)    
+    test_score = model.evaluate(X_test_enc, y_test_enc, batch_size=batch_size, verbose=0)
+    print('Raw test score:', test_score)    
 
     # better evaluation, shows accuracy of the model on a word level and the confusion matrix of the test set 
-    acc, cm = compare_prediction_groundtruth(model, X_test_enc, y_test_enc, True, indices=[1,2,3])
+    acc, cm = compare_prediction_groundtruth(model, X_test_enc, y_test_enc, ind2label, True, indices=[1,2,3])
 
     # show evaluation statistics of chosen labels
     labels = [1, 2, 3]
