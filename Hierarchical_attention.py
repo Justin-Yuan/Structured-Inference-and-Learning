@@ -18,7 +18,6 @@ from keras.layers import Conv1D, MaxPooling1D, Embedding
 from keras.callbacks import ModelCheckpoint
 from keras.models import load_model
 
-
 import keras.backend as K
 
 
@@ -40,13 +39,13 @@ class HierarchicalAttentionClassifier(object):
         self.y_test = None 
 
         # model type 
-        self.type = 'word_attention'
+        self.type = 'hier_attention'
         
-        # load data selectively 
-        if raw_data_path != None:
-            self._load_raw_data(raw_data_path)
-        if embedded_data_path != None:
-            self._load_embedded_data(embedded_data_path)
+        # # load data selectively 
+        # if raw_data_path != None:
+        #     self._load_raw_data(raw_data_path)
+        # if embedded_data_path != None:
+        #     self._load_embedded_data(embedded_data_path)
             
         # variable to hold the model 
         self.model = None 
@@ -76,80 +75,83 @@ class HierarchicalAttentionClassifier(object):
     def set_epochs(self, new_epochs):
         self.epochs = new_epochs
         
-    def _load_raw_data(self, raw_data_path):
-        """ saved data format 
-        processed_data ={
-            'texts': filtered_texts,
-            'scores': scores,
-            'scores_dict':scores_dict,
-            'count': count, 
-            'embeddings_index': embeddings_index,
-            'word_index':word_index
-    }
-        """
-        with open(raw_data_path, 'rb') as f:
-            raw_data = pickle.load(f)
-            self.texts = raw_data['texts']
-            self.scores = raw_data['scores']
-            self.scores_dict = raw_data['scores_dict']
-            print(self.scores_dict)
-            self.count = raw_data['count'] 
-            self.word_index = raw_data['word_index']
-            print('loaded raw processed data from', raw_data_path)
+    # def _load_raw_data(self, raw_data_path):
+    #     """ saved data format 
+    #     processed_data ={
+    #         'texts': filtered_texts,
+    #         'scores': scores,
+    #         'scores_dict':scores_dict,
+    #         'count': count, 
+    #         'embeddings_index': embeddings_index,
+    #         'word_index':word_index
+    # }
+    #     """
+    #     with open(raw_data_path, 'rb') as f:
+    #         raw_data = pickle.load(f)
+    #         self.texts = raw_data['texts']
+    #         self.scores = raw_data['scores']
+    #         self.scores_dict = raw_data['scores_dict']
+    #         print(self.scores_dict)
+    #         self.count = raw_data['count'] 
+    #         self.word_index = raw_data['word_index']
+    #         print('loaded raw processed data from', raw_data_path)
         
-    def _load_embedded_data(self, embedded_data_path, validation_split=0.1):
-        """Classifier
-        """ 
-        # f = np.load('data_and_embedding100.npz')
-        f = np.load(embedded_data_path)
+    # def _load_embedded_data(self, embedded_data_path, validation_split=0.1):
+    #     """Classifier
+    #     """ 
+    #     # f = np.load('data_and_embedding100.npz')
+    #     f = np.load(embedded_data_path)
         
-        self.num_labels = int(f['num_labels']) + 1
-        self.num_words = int(f['num_words'])
-        self.embedding_dim = int(f['embedding_dim'])
-        self.max_sequence_length = int(f['max_sequence_length'])
+    #     self.num_labels = int(f['num_labels']) + 1
+    #     self.num_words = int(f['num_words'])
+    #     self.embedding_dim = int(f['embedding_dim'])
+    #     self.max_sequence_length = int(f['max_sequence_length'])
 
-        self.x = f['x_train']
-        self.y = f['y_train']
-        self.x_test = f['x_test']
-        self.y_test = f['y_test']
+    #     self.x = f['x_train']
+    #     self.y = f['y_train']
+    #     self.x_test = f['x_test']
+    #     self.y_test = f['y_test']
 
-        self.embedding_matrix = f['embedding_matrix']
+    #     self.embedding_matrix = f['embedding_matrix']
         
-        indices = np.arange(self.x.shape[0])
-        np.random.shuffle(indices)
-        self.x = self.x[indices]
-        self.y = self.y[indices]
-        num_validation_samples = int(validation_split * self.x.shape[0])
+    #     indices = np.arange(self.x.shape[0])
+    #     np.random.shuffle(indices)
+    #     self.x = self.x[indices]
+    #     self.y = self.y[indices]
+    #     num_validation_samples = int(validation_split * self.x.shape[0])
 
-        self.x_train = self.x[:-num_validation_samples]
-        self.y_train = self.y[:-num_validation_samples]
-        self.x_val = self.x[-num_validation_samples:]
-        self.y_val = self.y[-num_validation_samples:]
-        print('loaded embedded datasets from', embedded_data_path)
+    #     self.x_train = self.x[:-num_validation_samples]
+    #     self.y_train = self.y[:-num_validation_samples]
+    #     self.x_val = self.x[-num_validation_samples:]
+    #     self.y_val = self.y[-num_validation_samples:]
+    #     print('loaded embedded datasets from', embedded_data_path)
 
-    
+
 
     def build(self):
         """ train a hybrid model with Convolution + LSTM
         """
-        sentence_input = Input(shape=(self.max_sequence_length, ), dtype='int32')
-        embedded_sequences = self.embedding_layer(sentence_input)
+        sentence_input = Input(shape=(max_sequence_length, ), dtype='int32')
+        embedded_sequences = embedding_layer(sentence_input)
         gru_word = Bidirectional(GRU(50, return_sequences=True))(embedded_sequences)
         dense_word = TimeDistributed((Dense(100)))(gru_word)
         tanh_word = TimeDistributed(Activation('tanh'))(dense_word)
         att_word = AttLayer()(tanh_word)
-        preds = Dense(6, activation='softmax')(att_word)
-        self.model = Model(sentence_input, preds)
-        
-    def train(self):
-        """ use RMSprop instead of Adam 
-        """
-        optimizer='rmsprop'
-        super(WordAttentionClassifier, self).train(optimizer=optimizer)
+        sentEncoder = Model(sentence_input, att_word)
+
+        review_input = Input(shape=(max_sentence_length, max_sequence_length), dtype='int32')
+        review_encoder = TimeDistributed(sentEncoder)(review_input)
+        gru_sent = Bidirectional(GRU(50, return_sequences=True))(review_encoder)
+        dense_sent = TimeDistributed(Dense(100))(gru_sent)
+        tanh_sent = TimeDistributed(Activation('tanh'))(dense_sent)
+        att_sent = AttLayer()(tanh_sent)
+        preds = Dense(6, activation='softmax')(att_sent)
+        model_attention = Model(review_input, preds)
+        self.model = model_attention
         
 
-    def train(self, loss='categorical_crossentropy', optimizer='adam', model_base_path="models/"):
-        """
+    def train(self, loss='categorical_crossentropy', optimizer='rmsprop', model_base_path="models/"):
+        """ 
         """
         self.model.compile(loss=loss, optimizer=optimizer, metrics=['acc'])
         
@@ -168,12 +170,14 @@ class HierarchicalAttentionClassifier(object):
 
         print("Training time: ", time.time() - start_time)
         
+
     def predict(self, test_data):
         """ predict lables given the test data 
         """
         predictions = self.model.predict(test_data)
         return predictions
         
+
     def evaluate(self, x_test_data=None, y_test_data=None):
         """ evaluate on the test set or specified test data 
         """
@@ -238,7 +242,7 @@ class AttLayer(Layer):
     def compute_output_shape(self, input_shape):
         return (input_shape[0], input_shape[-1])
 
-        
+
 
 
 if __name__ == '__main__':
